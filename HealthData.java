@@ -1,4 +1,3 @@
-
 public class HealthData {
     private int id;
     private int userId;

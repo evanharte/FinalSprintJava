@@ -40,14 +40,14 @@ public class HealthMonitoringApp {
         userList.add(user1);
 
         for (User users : userList) {
-            userDao.createUser(users);
+            UserDaoExample.createUser(users);
         }
     }
 
 
     public static boolean loginUser(String email, String password) {
         //implement method to login user.
-        User user = userDao.getUserByEmail(email);
+        User user = UserDaoExample.getUserByEmail(email);
 
         if (user != null) {
             // Compare the stored hashed password with the given password and return result
