@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import org.mindrot.jbcrypt.BCrypt;
 
 
 public class HealthMonitoringApp {
@@ -24,7 +26,22 @@ public class HealthMonitoringApp {
     public static void main(String[] args) {
        DatabaseConnection databaseConnection = new DatabaseConnection();
         UserDaoExample userDao = new UserDaoExample();
-        // test register a new user
+        // test register a new user with createUser() method via command line input
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter first name: ");
+        String first_name = scanner.nextLine();
+        System.out.println("Enter last name: ");
+        String last_name = scanner.nextLine();
+        System.out.println("Enter email: ");
+        String email = scanner.nextLine();
+        System.out.println("Enter password: ");
+        String password = scanner.nextLine();
+        System.out.println("Are you a doctor? (true/false): ");
+        boolean is_doctor = scanner.nextBoolean();
+        User user = new User(first_name, last_name, email, password, is_doctor);
+        scanner.close();
+        UserDaoExample.createUser(user);
+        
         // test Login user (call testLoginUser() here)
         // Add health data
         // Generate recommendations
@@ -34,14 +51,14 @@ public class HealthMonitoringApp {
         //test doctor portal (call testDoctorPortal() here)
 
 
-        List<User> userList = new ArrayList<>();
+        // List<User> userList = new ArrayList<>();
 
-        User user1 = new User(5,"Ainee", "Malik","qmalik@gmail.com", "guggu", false);
-        userList.add(user1);
+        // User user1 = new User(5,"Ainee", "Malik","qmalik@gmail.com", "guggu", false);
+        // userList.add(user1);
 
-        for (User users : userList) {
-            UserDaoExample.createUser(users);
-        }
+        // for (User users : userList) {
+        //     UserDaoExample.createUser(users);
+        // }
     }
 
 
@@ -51,10 +68,9 @@ public class HealthMonitoringApp {
 
         if (user != null) {
             // Compare the stored hashed password with the given password and return result
+            return BCrypt.checkpw(password, user.getPassword());
         }
-
         return false;
-
     }
 
 
@@ -92,8 +108,10 @@ public class HealthMonitoringApp {
 
         if (loginSuccess) {
             // Print to console, "Login Successful"
+            System.out.println("Login Successful");
         } else {
             // Print to console, "Incorrect email or password. Please try again.");
+            System.out.println("Incorrect email or password. Please try again.");
             // Show an error message and prompt the user to re-enter their credentials
         }
     }

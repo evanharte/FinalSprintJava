@@ -8,7 +8,6 @@ public class DoctorPortalDao {
 
    // Complete all these methods and add more as needed
 
-   /* 
     public DoctorPortalDao() {
         userDao = new UserDao();
         healthDataDao = new HealthDataDao();
@@ -16,6 +15,7 @@ public class DoctorPortalDao {
 
     public Doctor getDoctorById(int doctorId) {
         // Implement this method
+        
     }
 
     public List<User> getPatientsByDoctorId(int doctorId) {
@@ -27,6 +27,6 @@ public class DoctorPortalDao {
     }
 
     // Add more methods for other doctor-specific tasks
-    */
+
 }
 
