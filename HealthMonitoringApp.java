@@ -78,6 +78,7 @@ public class HealthMonitoringApp {
             int steps = scanner.nextInt();
             System.out.println("Enter heart rate: ");
             int heart_rate = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character left by nextInt()
             System.out.println("Enter Date (YYYY-MM-DD): ");
             String date = scanner.nextLine();
             HealthData hd = new HealthData(user_id, weight, height, steps, heart_rate, date);
@@ -87,7 +88,7 @@ public class HealthMonitoringApp {
             } else {
                 System.out.println("Failed to add health data.");
             }
-        } 
+        }
         
 
 
