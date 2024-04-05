@@ -27,22 +27,37 @@ public class HealthMonitoringApp {
        DatabaseConnection databaseConnection = new DatabaseConnection();
         UserDaoExample userDao = new UserDaoExample();
         // test register a new user with createUser() method via command line input
+        System.out.println("-------------------------------");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter first name: ");
-        String first_name = scanner.nextLine();
-        System.out.println("Enter last name: ");
-        String last_name = scanner.nextLine();
-        System.out.println("Enter email: ");
-        String email = scanner.nextLine();
-        System.out.println("Enter password: ");
-        String password = scanner.nextLine();
-        System.out.println("Are you a doctor? (true/false): ");
-        boolean is_doctor = scanner.nextBoolean();
-        User user = new User(first_name, last_name, email, password, is_doctor);
-        scanner.close();
-        UserDaoExample.createUser(user);
+        System.out.println("Welcome to Health Monitoring System. Would you like to register a new user? (yes/no)");
+        String response = scanner.nextLine();
+
+        if (response.equalsIgnoreCase("yes")) {
+            System.out.println("Register: ");
+            System.out.println("-------------------------------");
+            System.out.println("Enter first name: ");
+            String first_name = scanner.nextLine();
+            System.out.println("Enter last name: ");
+            String last_name = scanner.nextLine();
+            System.out.println("Enter email: ");
+            String email = scanner.nextLine();
+            System.out.println("Enter password: ");
+            String password = scanner.nextLine();
+            System.out.println("Are you a doctor? (true/false): ");
+            boolean is_doctor = scanner.nextBoolean();
+            User user = new User(first_name, last_name, email, password, is_doctor);
+            UserDaoExample.createUser(user);
+        } 
         
-        // test Login user (call testLoginUser() here)
+        // scanner.close();
+
+        // test Login user (call testLoginUser() here) - user will be prompted to enter email and password from within the method
+        System.out.println();
+        System.out.println("Log In: ");
+        System.out.println("-------------------------------");
+        testLoginUser();
+        
+        
         // Add health data
         // Generate recommendations
         // Add a medicine reminder
@@ -100,20 +115,27 @@ public class HealthMonitoringApp {
      * add a test method to your main application class
      */
     public static void testLoginUser() {
-        // Replace the email and password with valid credentials from your database
-        String userEmail = "john@example.com";
-        String userPassword = "password";
+        // Prompt the user to enter their email and password to log them in and test whether it was successful or not all at once
 
-        boolean loginSuccess = loginUser(userEmail, userPassword);
+        Scanner scanner = new Scanner(System.in);
 
-        if (loginSuccess) {
-            // Print to console, "Login Successful"
-            System.out.println("Login Successful");
-        } else {
-            // Print to console, "Incorrect email or password. Please try again.");
-            System.out.println("Incorrect email or password. Please try again.");
-            // Show an error message and prompt the user to re-enter their credentials
-        }
+        while (true) {
+            System.out.println("Enter email: ");
+            String email = scanner.nextLine();
+            System.out.println("Enter password: ");
+            String password = scanner.nextLine();
+
+            boolean loginSuccess = loginUser(email, password);
+
+            if (loginSuccess) {
+                // Print to console, "Login Successful"
+                System.out.println("Login Successful");
+                break;
+            } else {
+                // Print to console, "Incorrect email or password. Please try again.");
+                System.out.println("Incorrect email or password. Please try again.");
+                // Show an error message and prompt the user to re-enter their credentials
+            }
+        }      
     }
-
 }
