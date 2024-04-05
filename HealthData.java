@@ -18,6 +18,15 @@ public class HealthData {
         this.date = date;
     }
 
+    public HealthData(int userId, double weight, double height, int steps, int heartRate, String date) {
+        this.userId = userId;
+        this.weight = weight;
+        this.height = height;
+        this.steps = steps;
+        this.heartRate = heartRate;
+        this.date = date;
+    }
+
     public int getId() {
         return id;
     }

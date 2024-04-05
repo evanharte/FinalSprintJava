@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class HealthDataDao {
-  public boolean createHealthData(HealthData healthData) { /* insert health data into database */ 
+  public static boolean createHealthData(HealthData healthData) { /* insert health data into database */ 
   String query = "INSERT INTO health_data (user_id, weight, height, steps, heart_rate, date) VALUES (?, ?, ?, ?, ?, ?)";
 
   try {

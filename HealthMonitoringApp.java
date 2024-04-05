@@ -26,6 +26,7 @@ public class HealthMonitoringApp {
     public static void main(String[] args) {
        DatabaseConnection databaseConnection = new DatabaseConnection();
         UserDaoExample userDao = new UserDaoExample();
+
         // test register a new user with createUser() method via command line input
         System.out.println("-------------------------------");
         Scanner scanner = new Scanner(System.in);
@@ -47,9 +48,12 @@ public class HealthMonitoringApp {
             boolean is_doctor = scanner.nextBoolean();
             User user = new User(first_name, last_name, email, password, is_doctor);
             UserDaoExample.createUser(user);
+
+            User user1 = UserDaoExample.getUserByEmail(email);
+            int userId = user1.getId();
+            System.out.println("Remember your user ID #: " + userId);
+            System.out.println();
         } 
-        
-        // scanner.close();
 
         // test Login user (call testLoginUser() here) - user will be prompted to enter email and password from within the method
         System.out.println();
@@ -57,26 +61,45 @@ public class HealthMonitoringApp {
         System.out.println("-------------------------------");
         testLoginUser();
         
-        
         // Add health data
+        System.out.println("Add Health Data: ");
+        System.out.println("-------------------------------");
+        System.out.println("Would you like to add new health data? (yes/no)");
+        String res = scanner.nextLine();
+
+        if (res.equalsIgnoreCase("yes")) {
+            System.out.println("Enter your ID #: ");
+            int user_id = scanner.nextInt();
+            System.out.println("Enter weight: ");
+            double weight = scanner.nextDouble();
+            System.out.println("Enter height: ");
+            double height = scanner.nextDouble();
+            System.out.println("Enter steps: ");
+            int steps = scanner.nextInt();
+            System.out.println("Enter heart rate: ");
+            int heart_rate = scanner.nextInt();
+            System.out.println("Enter Date (YYYY-MM-DD): ");
+            String date = scanner.nextLine();
+            HealthData hd = new HealthData(user_id, weight, height, steps, heart_rate, date);
+            boolean isDataCreated = HealthDataDao.createHealthData(hd);
+            if (isDataCreated) {
+                System.out.println("Health data added successfully.");
+            } else {
+                System.out.println("Failed to add health data.");
+            }
+        } 
+        
+
+
         // Generate recommendations
         // Add a medicine reminder
         // Get reminders for a specific user
         // Get due reminders for a specific user
         //test doctor portal (call testDoctorPortal() here)
-
-
-        // List<User> userList = new ArrayList<>();
-
-        // User user1 = new User(5,"Ainee", "Malik","qmalik@gmail.com", "guggu", false);
-        // userList.add(user1);
-
-        // for (User users : userList) {
-        //     UserDaoExample.createUser(users);
-        // }
     }
 
 
+    // FUNCTIONS //////////////////////////////////////////
     public static boolean loginUser(String email, String password) {
         //implement method to login user.
         User user = UserDaoExample.getUserByEmail(email);
@@ -137,5 +160,11 @@ public class HealthMonitoringApp {
                 // Show an error message and prompt the user to re-enter their credentials
             }
         }      
+    }
+
+    // addHealthData() method to add health data to the database
+    public static void addHealthData(HealthData healthData) {
+        // Add health data to the database
+        
     }
 }
