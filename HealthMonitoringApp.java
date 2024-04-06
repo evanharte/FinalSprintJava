@@ -24,8 +24,12 @@ public class HealthMonitoringApp {
      *  8. test doctor portal
      */
     public static void main(String[] args) {
-       DatabaseConnection databaseConnection = new DatabaseConnection();
+        DatabaseConnection databaseConnection = new DatabaseConnection();
         UserDaoExample userDao = new UserDaoExample();
+
+        // initialiaze any global variables
+        HealthData hd = new HealthData();
+        int DailySteps = 10000;
 
         // test register a new user with createUser() method via command line input
         System.out.println("-------------------------------");
@@ -51,7 +55,7 @@ public class HealthMonitoringApp {
 
             User user1 = UserDaoExample.getUserByEmail(email);
             int userId = user1.getId();
-            System.out.println("Remember your user ID #: " + userId);
+            System.out.println("Your user ID # is: " + userId);
             System.out.println();
         } 
 
@@ -76,12 +80,12 @@ public class HealthMonitoringApp {
             double height = scanner.nextDouble();
             System.out.println("Enter steps: ");
             int steps = scanner.nextInt();
-            System.out.println("Enter heart rate: ");
+            System.out.println("Enter resting heart rate: ");
             int heart_rate = scanner.nextInt();
             scanner.nextLine(); // Consume the newline character left by nextInt()
             System.out.println("Enter Date (YYYY-MM-DD): ");
             String date = scanner.nextLine();
-            HealthData hd = new HealthData(user_id, weight, height, steps, heart_rate, date);
+            hd = new HealthData(user_id, weight, height, steps, heart_rate, date);
             boolean isDataCreated = HealthDataDao.createHealthData(hd);
             if (isDataCreated) {
                 System.out.println("Health data added successfully.");
@@ -90,9 +94,56 @@ public class HealthMonitoringApp {
             }
         }
         
-
-
         // Generate recommendations
+        System.out.println();
+        System.out.println("System Recommendations: ");
+        System.out.println("-------------------------------");
+        System.out.println("Would you like the system to generate health recommendations for you? (yes/no): ");
+        String response1 = scanner.nextLine();
+        if (response1.equalsIgnoreCase("yes")) {
+            System.out.println("-------------------------------");
+            System.out.println("Your weight is: " + hd.getWeight());
+            System.out.println("Your height is: " + hd.getHeight());
+            System.out.println("Your have " + hd.getSteps() + " steps so far today.");
+            System.out.println("Your resting heart rate is: " + hd.getHeartRate());
+            System.out.println("-------------------------------");
+
+            if (hd.getWeight() > 200 && hd.getHeight() < 5.5) {
+                System.out.println("Because your weight is over 200lbs and your height is under 5.5, consider watching less TV and eating healthier foods.");
+            } else if (hd.getWeight() < 100 && hd.getHeight() > 6.0) {
+                System.out.println("Because your weight is under 100lbs and your height is over 6.0, you need to increase your daily calorie intake to gain some weight!");
+            } else {
+                System.out.println("You're maintaining a healthy weight for your height and weight! What's your secret??");
+            }
+
+            int StepsToGo = DailySteps - hd.getSteps();
+
+            if (hd.getSteps() < 1000) {
+                System.out.println("You got loss than 1000 steps today. You should consider walking more or going for a jog.");
+                System.out.println("You have " + StepsToGo + " steps to go to reach the daily goal.");
+            } else if (hd.getSteps() > DailySteps) {
+                System.out.println("Your steps are over 10,000! Way to go, champ.");
+            } else {
+                System.out.println("You're doing okay with your steps.");
+                System.out.println("You have " + StepsToGo + " steps to go to reach the daily goal.");
+            }
+
+            if (hd.getHeartRate() > 100) {
+                System.out.println("Your resting heart rate is very high. Consider seeing your doctor.");
+            } else if (hd.getHeartRate() > 80) {
+                System.out.println("Your resting heart rate is a bit high.");
+                System.out.println("You should consider doing some daily light exercise. Going for 20-30 walks is a good place to start!");
+            } else if (hd.getHeartRate() < 40) {
+                System.out.println("Your resting heart rate is low. Consider seeing your doctor.");
+            } else if (hd.getHeartRate() == 0 || hd.getHeartRate() < 0) {
+                System.out.println("You are dead. Rest in Peace.");
+            } else {
+                System.out.println("Your resting heart rate is normal. Keep up the good work!");
+            }
+        }
+
+
+
         // Add a medicine reminder
         // Get reminders for a specific user
         // Get due reminders for a specific user
@@ -154,6 +205,10 @@ public class HealthMonitoringApp {
             if (loginSuccess) {
                 // Print to console, "Login Successful"
                 System.out.println("Login Successful");
+                User user1 = UserDaoExample.getUserByEmail(email);
+                int userId = user1.getId();
+                System.out.println("Your user ID # is: " + userId);
+                System.out.println();
                 break;
             } else {
                 // Print to console, "Incorrect email or password. Please try again.");

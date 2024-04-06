@@ -27,6 +27,15 @@ public class HealthData {
         this.date = date;
     }
 
+    public HealthData() {
+        this.userId = 0;
+        this.weight = 0.0;
+        this.height = 0.0;
+        this.steps = 0;
+        this.heartRate = 0;
+        this.date = null;
+    }
+
     public int getId() {
         return id;
     }
