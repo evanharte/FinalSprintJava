@@ -29,6 +29,7 @@ public class HealthMonitoringApp {
 
         // initialiaze any global variables
         HealthData hd = new HealthData();
+        MedicineReminder mr = new MedicineReminder();
         int DailySteps = 10000;
 
         // test register a new user with createUser() method via command line input
@@ -123,8 +124,38 @@ public class HealthMonitoringApp {
         }
 
 
-
         // Add a medicine reminder
+        System.out.println();
+        System.out.println("Medicine Reminders: ");
+        System.out.println("-------------------------------");
+        System.out.println("Would you like to add a medicine reminder? (yes/no): ");
+        String response2 = scanner.nextLine();
+        if (response2.equalsIgnoreCase("yes")) {
+            System.out.println("Enter your ID #: ");
+            int user_id = scanner.nextInt();
+            scanner.nextLine(); 
+            System.out.println("Enter medicine name: ");
+            String medicine_name = scanner.nextLine();
+            System.out.println("Enter dosage: ");
+            String dosage = scanner.nextLine();
+            System.out.println("Enter schedule: ");
+            String schedule = scanner.nextLine();
+            System.out.println("Enter start date (YYYY-MM-DD): ");
+            String start_date = scanner.nextLine();
+            System.out.println("Enter end date (YYYY-MM-DD): ");
+            String end_date = scanner.nextLine();
+            mr = new MedicineReminder(user_id, medicine_name, dosage, schedule, start_date, end_date);
+
+            // boolean isReminderCreated = MedicineReminderDao.createMedicineReminder(mr);
+            // if (isReminderCreated) {
+            //     System.out.println("Medicine reminder added successfully.");
+            // } else {
+            //     System.out.println("Failed to add medicine reminder.");
+            // }
+        }
+
+
+
         // Get reminders for a specific user
         // Get due reminders for a specific user
         //test doctor portal (call testDoctorPortal() here)

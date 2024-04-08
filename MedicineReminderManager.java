@@ -30,6 +30,11 @@ public class MedicineReminderManager {
     public List<MedicineReminder> getRemindersForUser(int userId) {
         List<MedicineReminder> userReminders = new ArrayList<>();
         // Write your logic here
+        for (MedicineReminder reminder : reminders) {
+            if (reminder.getUserId() == userId) {
+                userReminders.add(reminder);
+            }
+        }
 
         return userReminders;
     }
@@ -38,8 +43,16 @@ public class MedicineReminderManager {
         List<MedicineReminder> dueReminders = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
         // Write your logic here
+        for (MedicineReminder reminder : reminders) {
+            if (reminder.getUserId() == userId) {
+                LocalDateTime startDate = LocalDateTime.parse(reminder.getStartDate() + " 00:00", formatter);
+                LocalDateTime endDate = LocalDateTime.parse(reminder.getEndDate() + " 00:00", formatter);
+                if (now.isAfter(startDate) && now.isBefore(endDate)) {
+                    dueReminders.add(reminder);
+                }
+            }
+        }
 
         return dueReminders;
     }
