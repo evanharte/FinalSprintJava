@@ -94,36 +94,36 @@ public class HealthMonitoringApp {
             } else {
                 System.out.println("Failed to add health data.");
             }
+
+            // Generate recommendations
+            System.out.println();
+            System.out.println("System Recommendations: ");
+            System.out.println("-------------------------------");
+            System.out.println("Would you like the system to generate health recommendations for you? (yes/no): ");
+            String response1 = scanner.nextLine();
+            if (response1.equalsIgnoreCase("yes")) {
+                System.out.println();
+                System.out.println("Your weight is: " + hd.getWeight());
+                System.out.println("Your height is: " + hd.getHeight());
+                System.out.println("Your have " + hd.getSteps() + " steps so far today.");
+                System.out.println("Your resting heart rate is: " + hd.getHeartRate());
+                System.out.println();
+
+                RecommendationSystem recSystem = new RecommendationSystem();
+                List<String> recommendations = recSystem.generateRecommendations(hd);
+
+                System.out.println("Your Recommendations: ");
+                System.out.println("-------------------------------");
+                for (String recommendation : recommendations) {
+                    System.out.println(recommendation);
+                    // Add recommendation to the database
+                    RecommendationSystemDao.InsertRecommendationData(hd, recommendation);
+                }
+                System.out.println();
+            }
         }
         
-        // Generate recommendations
-        System.out.println();
-        System.out.println("System Recommendations: ");
-        System.out.println("-------------------------------");
-        System.out.println("Would you like the system to generate health recommendations for you? (yes/no): ");
-        String response1 = scanner.nextLine();
-        if (response1.equalsIgnoreCase("yes")) {
-            System.out.println();
-            System.out.println("Your weight is: " + hd.getWeight());
-            System.out.println("Your height is: " + hd.getHeight());
-            System.out.println("Your have " + hd.getSteps() + " steps so far today.");
-            System.out.println("Your resting heart rate is: " + hd.getHeartRate());
-            System.out.println();
-
-            RecommendationSystem recSystem = new RecommendationSystem();
-            List<String> recommendations = recSystem.generateRecommendations(hd);
-
-            System.out.println("Your Recommendations: ");
-            System.out.println("-------------------------------");
-            for (String recommendation : recommendations) {
-                System.out.println(recommendation);
-                // Add recommendation to the database
-                RecommendationSystemDao.InsertRecommendationData(hd, recommendation);
-            }
-            System.out.println();
-        }
-
-
+        
         // Add a medicine reminder
         System.out.println();
         System.out.println("Medicine Reminders: ");
@@ -146,12 +146,12 @@ public class HealthMonitoringApp {
             String end_date = scanner.nextLine();
             mr = new MedicineReminder(user_id, medicine_name, dosage, schedule, start_date, end_date);
 
-            // boolean isReminderCreated = MedicineReminderDao.createMedicineReminder(mr);
-            // if (isReminderCreated) {
-            //     System.out.println("Medicine reminder added successfully.");
-            // } else {
-            //     System.out.println("Failed to add medicine reminder.");
-            // }
+            boolean isReminderCreated = MedicineReminderDao.createMedicineReminder(mr);
+            if (isReminderCreated) {
+                System.out.println("Medicine reminder added successfully.");
+            } else {
+                System.out.println("Failed to add medicine reminder.");
+            }
         }
 
 
