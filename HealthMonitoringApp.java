@@ -101,45 +101,21 @@ public class HealthMonitoringApp {
         System.out.println("Would you like the system to generate health recommendations for you? (yes/no): ");
         String response1 = scanner.nextLine();
         if (response1.equalsIgnoreCase("yes")) {
-            System.out.println("-------------------------------");
+            System.out.println();
             System.out.println("Your weight is: " + hd.getWeight());
             System.out.println("Your height is: " + hd.getHeight());
             System.out.println("Your have " + hd.getSteps() + " steps so far today.");
             System.out.println("Your resting heart rate is: " + hd.getHeartRate());
+            System.out.println();
+
+            RecommendationSystem recSystem = new RecommendationSystem();
+            List<String> recommendations = recSystem.generateRecommendations(hd);
+            System.out.println("Your Recommendations: ");
             System.out.println("-------------------------------");
-
-            if (hd.getWeight() > 200 && hd.getHeight() < 5.5) {
-                System.out.println("Because your weight is over 200lbs and your height is under 5.5, consider watching less TV and eating healthier foods.");
-            } else if (hd.getWeight() < 100 && hd.getHeight() > 6.0) {
-                System.out.println("Because your weight is under 100lbs and your height is over 6.0, you need to increase your daily calorie intake to gain some weight!");
-            } else {
-                System.out.println("You're maintaining a healthy weight for your height and weight! What's your secret??");
+            for (String recommendation : recommendations) {
+                System.out.println(recommendation);
             }
-
-            int StepsToGo = DailySteps - hd.getSteps();
-
-            if (hd.getSteps() < 1000) {
-                System.out.println("You got loss than 1000 steps today. You should consider walking more or going for a jog.");
-                System.out.println("You have " + StepsToGo + " steps to go to reach the daily goal.");
-            } else if (hd.getSteps() > DailySteps) {
-                System.out.println("Your steps are over 10,000! Way to go, champ.");
-            } else {
-                System.out.println("You're doing okay with your steps.");
-                System.out.println("You have " + StepsToGo + " steps to go to reach the daily goal.");
-            }
-
-            if (hd.getHeartRate() > 100) {
-                System.out.println("Your resting heart rate is very high. Consider seeing your doctor.");
-            } else if (hd.getHeartRate() > 80) {
-                System.out.println("Your resting heart rate is a bit high.");
-                System.out.println("You should consider doing some daily light exercise. Going for 20-30 walks is a good place to start!");
-            } else if (hd.getHeartRate() < 40) {
-                System.out.println("Your resting heart rate is low. Consider seeing your doctor.");
-            } else if (hd.getHeartRate() == 0 || hd.getHeartRate() < 0) {
-                System.out.println("You are dead. Rest in Peace.");
-            } else {
-                System.out.println("Your resting heart rate is normal. Keep up the good work!");
-            }
+            System.out.println();
         }
 
 
