@@ -69,6 +69,7 @@ public class HealthMonitoringApp {
         System.out.println("Add Health Data: ");
         System.out.println("-------------------------------");
         System.out.println("Would you like to add new health data? (yes/no)");
+        scanner.nextLine(); // Consume the newline character left by nextInt()
         String res = scanner.nextLine();
 
         if (res.equalsIgnoreCase("yes")) {
@@ -110,10 +111,13 @@ public class HealthMonitoringApp {
 
             RecommendationSystem recSystem = new RecommendationSystem();
             List<String> recommendations = recSystem.generateRecommendations(hd);
+
             System.out.println("Your Recommendations: ");
             System.out.println("-------------------------------");
             for (String recommendation : recommendations) {
                 System.out.println(recommendation);
+                // Add recommendation to the database
+                RecommendationSystemDao.InsertRecommendationData(hd, recommendation);
             }
             System.out.println();
         }
