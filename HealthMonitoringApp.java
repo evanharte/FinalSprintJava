@@ -30,6 +30,7 @@ public class HealthMonitoringApp {
         // initialiaze any global variables
         HealthData hd = new HealthData();
         MedicineReminder mr = new MedicineReminder();
+        MedicineReminderManager mrm = new MedicineReminderManager();
         int DailySteps = 10000;
 
         // test register a new user with createUser() method via command line input
@@ -146,7 +147,11 @@ public class HealthMonitoringApp {
             String end_date = scanner.nextLine();
             mr = new MedicineReminder(user_id, medicine_name, dosage, schedule, start_date, end_date);
 
-            boolean isReminderCreated = MedicineReminderDao.createMedicineReminder(mr);
+            // Add reminder to the array list to be displayed in the terminal
+            mrm.addReminder(mr);
+            // Add reminder to the database
+            boolean isReminderCreated = MedicineReminderManager.createMedicineReminder(mr);
+           
             if (isReminderCreated) {
                 System.out.println("Medicine reminder added successfully.");
             } else {
@@ -155,8 +160,24 @@ public class HealthMonitoringApp {
         }
 
 
-
         // Get reminders for a specific user
+        System.out.println();
+        System.out.println("Would you like to see all of your medicine reminders? (yes/no): ");
+        String response3 = scanner.nextLine();
+
+        if (response3.equalsIgnoreCase("yes")) {
+            System.out.println("Enter your ID #: ");
+            int user_id = scanner.nextInt();
+            scanner.nextLine();
+            List<MedicineReminder> userReminders = mrm.getRemindersForUser(user_id);
+            System.out.println();
+            System.out.println("Your Medicine Reminders: ");
+            System.out.println("-------------------------------");
+            for (MedicineReminder reminder : userReminders) {
+                System.out.println(reminder);
+            }
+        }
+
         // Get due reminders for a specific user
         //test doctor portal (call testDoctorPortal() here)
     }

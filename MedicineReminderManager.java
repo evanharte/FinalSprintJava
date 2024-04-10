@@ -1,9 +1,8 @@
-
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.*;
 
 /**
  * The MedicineReminderManager class should have methods to add reminders, get reminders
@@ -24,13 +23,36 @@ public class MedicineReminderManager {
     }
 
     public void addReminder(MedicineReminder reminder) {
-        reminders.add(reminder);
+        this.reminders.add(reminder);
+    }
+
+    public static boolean createMedicineReminder(MedicineReminder reminder) {
+        String query = "INSERT INTO medicine_reminders (user_id, medicine_name, dosage, schedule, start_date, end_date) VALUES (?, ?, ?, ?, TO_DATE(?, 'YYYY-MM-DD'), TO_DATE(?, 'YYYY-MM-DD'))";
+
+        try {
+            Connection con = DatabaseConnection.getCon();
+            PreparedStatement statement = con.prepareStatement(query);
+            statement.setInt(1, reminder.getUserId());
+            statement.setString(2, reminder.getMedicineName());
+            statement.setString(3, reminder.getDosage());
+            statement.setString(4, reminder.getSchedule());
+            statement.setString(5, reminder.getStartDate());
+            statement.setString(6, reminder.getEndDate());
+            int updatedRows = statement.executeUpdate();
+
+            if (updatedRows != 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public List<MedicineReminder> getRemindersForUser(int userId) {
         List<MedicineReminder> userReminders = new ArrayList<>();
         // Write your logic here
-        for (MedicineReminder reminder : reminders) {
+        for (MedicineReminder reminder : this.reminders) {
             if (reminder.getUserId() == userId) {
                 userReminders.add(reminder);
             }
