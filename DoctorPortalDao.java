@@ -43,9 +43,23 @@ public class DoctorPortalDao {
 
     public List<HealthData> getHealthDataByPatientId(int patientId) {
         // Implement this method
+        String query = "SELECT * FROM health_data WHERE user_id = ?";
+        List<HealthData> healthData = new ArrayList<>();
+
+        try {
+            Connection con = DatabaseConnection.getCon();
+            PreparedStatement statement = con.prepareStatement(query);
+            statement.setInt(1, patientId);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int healthDataId = rs.getInt("id");
+                HealthData data = healthDataDao.getHealthDataById(healthDataId);
+                healthData.add(data);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return healthData;
     }
-
-    // Add more methods for other doctor-specific tasks
-
 }
 

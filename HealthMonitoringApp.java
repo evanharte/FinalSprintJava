@@ -78,8 +78,8 @@ public class HealthMonitoringApp {
         System.out.println("Add Health Data: ");
         System.out.println("-------------------------------");
         System.out.println("Would you like to add new health data? (yes/no)");
-        scanner.nextLine(); // Consume the newline character left by nextInt()
         String res = scanner.nextLine();
+        System.out.println();
 
         if (res.equalsIgnoreCase("yes")) {
             System.out.println("Enter your ID #: ");
@@ -279,9 +279,35 @@ public class HealthMonitoringApp {
             }
         }
         // Add code to Fetch patients associated with the doctor
-
+        List<User> patients = doctorPortalDao.getPatientsByDoctorId(instanceDoctor.getId());
+        System.out.println("Patients associated with Doctor " + instanceDoctor.getLastName() + ": ");
+        System.out.println("-------------------------------");
+        for (User patient : patients) {
+            System.out.println("Patient ID #: " + patient.getId());
+            System.out.println("Patient Name: " + patient.getFirstName() + " " + patient.getLastName());
+            System.out.println("Patient Email: " + patient.getEmail());
+            System.out.println();
+        }
+        
         // Add code to Fetch health data for the patient
-
+        System.out.println("Would you like to see health data for a specific patient? (yes/no): ");
+        String response = scanner.nextLine();
+        if (response.equalsIgnoreCase("yes")) {
+            System.out.println("Enter patient ID #: ");
+            int patientId = scanner.nextInt();
+            scanner.nextLine();
+            List<HealthData> healthData = doctorPortalDao.getHealthDataByPatientId(patientId);
+            System.out.println("Health Data for Patient ID #: " + patientId);
+            System.out.println("-------------------------------");
+            for (HealthData data : healthData) {
+                System.out.println("Weight: " + data.getWeight());
+                System.out.println("Height: " + data.getHeight());
+                System.out.println("Steps: " + data.getSteps());
+                System.out.println("Resting Heart Rate: " + data.getHeartRate());
+                System.out.println("Date: " + data.getDate());
+                System.out.println();
+            }
+        }
     }
 
 
