@@ -25,6 +25,14 @@ public class User {
         this.isDoctor = isDoctor;
     }
 
+    public User() {
+        this.firstName = "";
+        this.lastName = "";
+        this.email = "";
+        this.password = "";
+        this.isDoctor = false;
+    }
+
     public int getId() {
         return id;
     }

@@ -26,6 +26,25 @@ public class MedicineReminderManager {
         this.reminders.add(reminder);
     }
 
+    public List<MedicineReminder> parseResultSet(ResultSet rs) {
+        List<MedicineReminder> reminders = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                MedicineReminder reminder = new MedicineReminder();
+                reminder.setUserId(rs.getInt("user_id"));
+                reminder.setMedicineName(rs.getString("medicine_name"));
+                reminder.setDosage(rs.getString("dosage"));
+                reminder.setSchedule(rs.getString("schedule"));
+                reminder.setStartDate(rs.getString("start_date"));
+                reminder.setEndDate(rs.getString("end_date"));
+                reminders.add(reminder);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reminders;
+    }
+
     public static boolean createMedicineReminder(MedicineReminder reminder) {
         String query = "INSERT INTO medicine_reminders (user_id, medicine_name, dosage, schedule, start_date, end_date) VALUES (?, ?, ?, ?, TO_DATE(?, 'YYYY-MM-DD'), TO_DATE(?, 'YYYY-MM-DD'))";
 
@@ -52,30 +71,59 @@ public class MedicineReminderManager {
     public List<MedicineReminder> getRemindersForUser(int userId) {
         List<MedicineReminder> userReminders = new ArrayList<>();
         // Write your logic here
-        for (MedicineReminder reminder : this.reminders) {
-            if (reminder.getUserId() == userId) {
-                userReminders.add(reminder);
-            }
-        }
+        // for (MedicineReminder reminder : this.reminders) {
+        //     if (reminder.getUserId() == userId) {
+        //         userReminders.add(reminder);
+        //     }
+        // }
 
+        // return userReminders;
+
+
+        String query = "SELECT user_id, medicine_name, dosage, schedule, start_date, end_date FROM medicine_reminders WHERE user_id = ?;";
+
+        try {
+            Connection con = DatabaseConnection.getCon();
+            PreparedStatement statement = con.prepareStatement(query);
+            statement.setInt(1, userId);
+            ResultSet rs = statement.executeQuery();
+            List<MedicineReminder> parseResults = parseResultSet(rs);
+            userReminders.addAll(parseResults);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return userReminders;
     }
 
     public List<MedicineReminder> getDueReminders(int userId) {
         List<MedicineReminder> dueReminders = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         // Write your logic here
-        for (MedicineReminder reminder : reminders) {
-            if (reminder.getUserId() == userId) {
-                LocalDateTime startDate = LocalDateTime.parse(reminder.getStartDate() + " 00:00", formatter);
-                LocalDateTime endDate = LocalDateTime.parse(reminder.getEndDate() + " 00:00", formatter);
-                if (now.isAfter(startDate) && now.isBefore(endDate)) {
-                    dueReminders.add(reminder);
-                }
-            }
-        }
+        // for (MedicineReminder reminder : reminders) {
+        //     if (reminder.getUserId() == userId) {
+        //         LocalDateTime startDate = LocalDateTime.parse(reminder.getStartDate() + " 00:00", formatter);
+        //         LocalDateTime endDate = LocalDateTime.parse(reminder.getEndDate() + " 00:00", formatter);
+        //         if (now.isAfter(startDate) && now.isBefore(endDate)) {
+        //             dueReminders.add(reminder);
+        //         }
+        //     }
+        // }
+        // return dueReminders;
 
+        String query = "SELECT user_id, medicine_name, dosage, schedule, start_date, end_date FROM medicine_reminders WHERE user_id = ? AND TO_DATE(?, 'YYYY-MM-DD') BETWEEN start_date AND end_date;";
+
+        try {
+            Connection con = DatabaseConnection.getCon();
+            PreparedStatement statement = con.prepareStatement(query);
+            statement.setInt(1, userId);
+            statement.setString(2, now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            ResultSet rs = statement.executeQuery();
+            List<MedicineReminder> parseResults = parseResultSet(rs);
+            dueReminders.addAll(parseResults);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return dueReminders;
     }
 }

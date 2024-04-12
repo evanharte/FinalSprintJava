@@ -12,6 +12,8 @@ import org.mindrot.jbcrypt.BCrypt;
 public class HealthMonitoringApp {
 
     private static UserDaoExample userDao = new UserDaoExample();
+    public static User instanceUser = new User();
+    public static Doctor instanceDoctor = new Doctor();
     /**
      * Test the following functionalities within the Main Application
      *  1. Register a new user
@@ -24,14 +26,13 @@ public class HealthMonitoringApp {
      *  8. test doctor portal
      */
     public static void main(String[] args) {
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        UserDaoExample userDao = new UserDaoExample();
+        // DatabaseConnection databaseConnection = new DatabaseConnection();
+        // UserDaoExample userDao = new UserDaoExample();
 
         // initialiaze any global variables
         HealthData hd = new HealthData();
         MedicineReminder mr = new MedicineReminder();
         MedicineReminderManager mrm = new MedicineReminderManager();
-        int DailySteps = 10000;
 
         // test register a new user with createUser() method via command line input
         System.out.println("-------------------------------");
@@ -52,8 +53,13 @@ public class HealthMonitoringApp {
             String password = scanner.nextLine();
             System.out.println("Are you a doctor? (true/false): ");
             boolean is_doctor = scanner.nextBoolean();
-            User user = new User(first_name, last_name, email, password, is_doctor);
-            UserDaoExample.createUser(user);
+            // User user = new User(first_name, last_name, email, password, is_doctor);
+            instanceUser.setFirstName(first_name);
+            instanceUser.setLastName(last_name);
+            instanceUser.setEmail(email);
+            instanceUser.setPassword(password);
+            instanceUser.setDoctor(is_doctor);
+            UserDaoExample.createUser(instanceUser);
 
             User user1 = UserDaoExample.getUserByEmail(email);
             int userId = user1.getId();
@@ -66,6 +72,7 @@ public class HealthMonitoringApp {
         System.out.println("Log In: ");
         System.out.println("-------------------------------");
         testLoginUser();
+
         
         // Add health data
         System.out.println("Add Health Data: ");
@@ -174,12 +181,44 @@ public class HealthMonitoringApp {
             System.out.println("Your Medicine Reminders: ");
             System.out.println("-------------------------------");
             for (MedicineReminder reminder : userReminders) {
-                System.out.println(reminder);
+                System.out.println("Medicine Name: " + reminder.getMedicineName());
+                System.out.println("Dosage: " + reminder.getDosage());
+                System.out.println("Schedule: " + reminder.getSchedule());
+                System.out.println("Start Date: " + reminder.getStartDate());
+                System.out.println("End Date: " + reminder.getEndDate());
+                System.out.println();
             }
         }
 
-        // Get due reminders for a specific user
+        // Get reminders for a specific user only for current medications
+        System.out.println();
+        System.out.println("Would you like to see your due medicine reminders? (yes/no): ");
+        String response4 = scanner.nextLine();
+
+        if (response4.equalsIgnoreCase("yes")) {
+            System.out.println("Enter your ID #: ");
+            int user_id = scanner.nextInt();
+            scanner.nextLine();
+            List<MedicineReminder> dueReminders = mrm.getDueReminders(user_id);
+            System.out.println();
+            System.out.println("Your due/current Medicine Reminders: ");
+            System.out.println("-------------------------------");
+            for (MedicineReminder reminder : dueReminders) {
+                System.out.println("Medicine Name: " + reminder.getMedicineName());
+                System.out.println("Dosage: " + reminder.getDosage());
+                System.out.println("Schedule: " + reminder.getSchedule());
+                System.out.println("Start Date: " + reminder.getStartDate());
+                System.out.println("End Date: " + reminder.getEndDate());
+                System.out.println();
+            }
+        }
         //test doctor portal (call testDoctorPortal() here)
+        if (instanceUser.isDoctor()) {
+            System.out.println();
+            System.out.println("Welcome to the Doctor Portal, Doctor " + instanceUser.getLastName());
+            System.out.println("-----------------------------------------------");
+            testDoctorPortal();
+        }
     }
 
 
@@ -205,11 +244,40 @@ public class HealthMonitoringApp {
      * 3. Fetching health data for a specific patient
       */
     public static void testDoctorPortal() {
-        // Replace the doctorId with a valid ID from your database
-        int doctorId = 1;
-
+        DoctorPortalDao doctorPortalDao = new DoctorPortalDao();
+       
         // Add code to Fetch the doctor by ID
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("Enter your Doctor ID #: ");
+            int doctorId = scanner.nextInt();
+            scanner.nextLine();
+            System.out.println("What is your medical license #?: ");
+            String medicalLicenseNumber = scanner.nextLine();
+            System.out.println("What is your specialization?: ");
+            String specialization = scanner.nextLine();
+            System.out.println();
 
+            User doctor = doctorPortalDao.getDoctorById(doctorId);
+            if (!doctor.isDoctor()) {
+                System.out.println("The user with this ID # is not a doctor. Please try again.");
+            } else {
+                instanceDoctor.setId(doctorId);
+                instanceDoctor.setFirstName(doctor.getFirstName());
+                instanceDoctor.setLastName(doctor.getLastName());
+                instanceDoctor.setEmail(doctor.getEmail());
+                instanceDoctor.setPassword(doctor.getPassword());
+                instanceDoctor.setDoctor(true);
+                instanceDoctor.setMedicalLicenseNumber(medicalLicenseNumber);
+                instanceDoctor.setSpecialization(specialization);
+
+                System.out.println("Doctor: " + instanceDoctor.getFirstName() + " " + instanceDoctor.getLastName());
+                System.out.println("Medical License #: " + instanceDoctor.getMedicalLicenseNumber());
+                System.out.println("Specialization: " + instanceDoctor.getSpecialization());
+                System.out.println();
+                break;
+            }
+        }
         // Add code to Fetch patients associated with the doctor
 
         // Add code to Fetch health data for the patient
@@ -240,6 +308,7 @@ public class HealthMonitoringApp {
                 User user1 = UserDaoExample.getUserByEmail(email);
                 int userId = user1.getId();
                 System.out.println("Your user ID # is: " + userId);
+                instanceUser = user1;
                 System.out.println();
                 break;
             } else {

@@ -9,6 +9,12 @@ public class Doctor extends User{
         this.specialization = specialization;
     }
 
+    public Doctor() {
+        super();
+        this.medicalLicenseNumber = "";
+        this.specialization = "";
+    }
+
     // Getters and setters for the new properties
     public String getMedicalLicenseNumber() {
         return medicalLicenseNumber;
