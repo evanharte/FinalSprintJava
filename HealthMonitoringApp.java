@@ -61,28 +61,31 @@ public class HealthMonitoringApp {
         System.out.println("-------------------------------");
         testLoginUser();
 
+///////////////////ADD HEALTH DATA//////////////////
+
         
-        // Add health data
+        // ADD HEALTH DATA
+        Scanner scanner2 = new Scanner(System.in);
         System.out.println("Add Health Data: ");
         System.out.println("-------------------------------");
         System.out.println("Would you like to add new health data? (yes/no)");
-        String res = scanner.nextLine();
-        System.out.println();
+        String res = scanner2.nextLine();
+        // System.out.println();
 
         if (res.equalsIgnoreCase("yes")) {
             System.out.println("Enter your ID #: ");
-            int user_id = scanner.nextInt();
+            int user_id = scanner2.nextInt();
             System.out.println("Enter weight: ");
-            double weight = scanner.nextDouble();
+            double weight = scanner2.nextDouble();
             System.out.println("Enter height: ");
-            double height = scanner.nextDouble();
+            double height = scanner2.nextDouble();
             System.out.println("Enter steps: ");
-            int steps = scanner.nextInt();
+            int steps = scanner2.nextInt();
             System.out.println("Enter resting heart rate: ");
-            int heart_rate = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character left by nextInt()
+            int heart_rate = scanner2.nextInt();
+            scanner2.nextLine(); // Consume the newline character left by nextInt()
             System.out.println("Enter Date (YYYY-MM-DD): ");
-            String date = scanner.nextLine();
+            String date = scanner2.nextLine();
             hd = new HealthData(user_id, weight, height, steps, heart_rate, date);
             boolean isDataCreated = HealthDataDao.createHealthData(hd);
             if (isDataCreated) {
@@ -94,11 +97,12 @@ public class HealthMonitoringApp {
 /////////////////////RECOMMENDATIONS//////////////////////////
 
             // Generate RECOMMENDATIONS
+            Scanner scanner3 = new Scanner(System.in);
             System.out.println();
             System.out.println("System Recommendations: ");
             System.out.println("-------------------------------");
             System.out.println("Would you like the system to generate health recommendations for you? (yes/no): ");
-            String response1 = scanner.nextLine();
+            String response1 = scanner3.nextLine();
             if (response1.equalsIgnoreCase("yes")) {
                 System.out.println();
                 System.out.println("Your weight is: " + hd.getWeight());
@@ -125,25 +129,26 @@ public class HealthMonitoringApp {
         
         
         // Add a MEDICINE REMINDER
+        Scanner scanner4 = new Scanner(System.in);
         System.out.println();
         System.out.println("Medicine Reminders: ");
         System.out.println("-------------------------------");
         System.out.println("Would you like to add a medicine reminder? (yes/no): ");
-        String response2 = scanner.nextLine();
+        String response2 = scanner4.nextLine();
         if (response2.equalsIgnoreCase("yes")) {
             System.out.println("Enter your ID #: ");
-            int user_id = scanner.nextInt();
-            scanner.nextLine(); 
+            int user_id = scanner4.nextInt();
+            scanner4.nextLine(); 
             System.out.println("Enter medicine name: ");
-            String medicine_name = scanner.nextLine();
+            String medicine_name = scanner4.nextLine();
             System.out.println("Enter dosage: ");
-            String dosage = scanner.nextLine();
+            String dosage = scanner4.nextLine();
             System.out.println("Enter schedule: ");
-            String schedule = scanner.nextLine();
+            String schedule = scanner4.nextLine();
             System.out.println("Enter start date (YYYY-MM-DD): ");
-            String start_date = scanner.nextLine();
+            String start_date = scanner4.nextLine();
             System.out.println("Enter end date (YYYY-MM-DD): ");
-            String end_date = scanner.nextLine();
+            String end_date = scanner4.nextLine();
             mr = new MedicineReminder(user_id, medicine_name, dosage, schedule, start_date, end_date);
 
             // Add reminder to the array list to be displayed in the terminal
@@ -160,14 +165,15 @@ public class HealthMonitoringApp {
 
 
         // Get REMINDERS for a SPECIFIC USER
+        Scanner scanner5 = new Scanner(System.in);
         System.out.println();
         System.out.println("Would you like to see all of your medicine reminders? (yes/no): ");
-        String response3 = scanner.nextLine();
+        String response3 = scanner5.nextLine();
 
         if (response3.equalsIgnoreCase("yes")) {
             System.out.println("Enter your ID #: ");
-            int user_id = scanner.nextInt();
-            scanner.nextLine();
+            int user_id = scanner5.nextInt();
+            scanner5.nextLine();
             List<MedicineReminder> userReminders = mrm.getRemindersForUser(user_id);
             System.out.println();
             System.out.println("Your Medicine Reminders: ");
@@ -183,14 +189,15 @@ public class HealthMonitoringApp {
         }
 
         // Get REMINDERS for a specific user only for CURRENT MEDICATIONS
+        Scanner scanner6 = new Scanner(System.in);
         System.out.println();
         System.out.println("Would you like to see your due medicine reminders? (yes/no): ");
-        String response4 = scanner.nextLine();
+        String response4 = scanner6.nextLine();
 
         if (response4.equalsIgnoreCase("yes")) {
             System.out.println("Enter your ID #: ");
-            int user_id = scanner.nextInt();
-            scanner.nextLine();
+            int user_id = scanner6.nextInt();
+            scanner6.nextLine();
             List<MedicineReminder> dueReminders = mrm.getDueReminders(user_id);
             System.out.println();
             System.out.println("Your due/current Medicine Reminders: ");
