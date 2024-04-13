@@ -1,5 +1,3 @@
-
-
 public class MedicineReminder {
     private int id;
     private int userId;

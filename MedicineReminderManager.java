@@ -4,17 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 
-/**
- * The MedicineReminderManager class should have methods to add reminders, get reminders
- *  1. for a specific user, and
- *  2. get reminders that are DUE for a specific user.
- *
- *  You'll need to integrate this class with your application and database logic to
- *  1. store,
- *  2. update, and
- *  3. delete reminders as needed.
- */
-
 public class MedicineReminderManager {
     private List<MedicineReminder> reminders;
 
@@ -70,16 +59,7 @@ public class MedicineReminderManager {
 
     public List<MedicineReminder> getRemindersForUser(int userId) {
         List<MedicineReminder> userReminders = new ArrayList<>();
-        // Write your logic here
-        // for (MedicineReminder reminder : this.reminders) {
-        //     if (reminder.getUserId() == userId) {
-        //         userReminders.add(reminder);
-        //     }
-        // }
-
-        // return userReminders;
-
-
+        
         String query = "SELECT user_id, medicine_name, dosage, schedule, start_date, end_date FROM medicine_reminders WHERE user_id = ?;";
 
         try {
@@ -98,18 +78,6 @@ public class MedicineReminderManager {
     public List<MedicineReminder> getDueReminders(int userId) {
         List<MedicineReminder> dueReminders = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
-        // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        // Write your logic here
-        // for (MedicineReminder reminder : reminders) {
-        //     if (reminder.getUserId() == userId) {
-        //         LocalDateTime startDate = LocalDateTime.parse(reminder.getStartDate() + " 00:00", formatter);
-        //         LocalDateTime endDate = LocalDateTime.parse(reminder.getEndDate() + " 00:00", formatter);
-        //         if (now.isAfter(startDate) && now.isBefore(endDate)) {
-        //             dueReminders.add(reminder);
-        //         }
-        //     }
-        // }
-        // return dueReminders;
 
         String query = "SELECT user_id, medicine_name, dosage, schedule, start_date, end_date FROM medicine_reminders WHERE user_id = ? AND TO_DATE(?, 'YYYY-MM-DD') BETWEEN start_date AND end_date;";
 

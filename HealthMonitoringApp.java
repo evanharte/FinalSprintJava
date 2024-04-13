@@ -1,6 +1,3 @@
-
-
-// import com.DataBaseConnection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,27 +11,17 @@ public class HealthMonitoringApp {
     private static UserDaoExample userDao = new UserDaoExample();
     public static User instanceUser = new User();
     public static Doctor instanceDoctor = new Doctor();
-    /**
-     * Test the following functionalities within the Main Application
-     *  1. Register a new user
-     *  2. Log in the user
-     *  3. Add health data
-     *  4. Generate recommendations
-     *  5. Add a medicine reminder
-     *  6. Get reminders for a specific user
-     *  7. Get due reminders for a specific user
-     *  8. test doctor portal
-     */
+    
     public static void main(String[] args) {
-        // DatabaseConnection databaseConnection = new DatabaseConnection();
-        // UserDaoExample userDao = new UserDaoExample();
-
+        
         // initialiaze any global variables
         HealthData hd = new HealthData();
         MedicineReminder mr = new MedicineReminder();
         MedicineReminderManager mrm = new MedicineReminderManager();
 
-        // test register a new user with createUser() method via command line input
+/////////////////////REGISTER//////////////////////////
+
+        // REGISTER a new user with createUser() method via command line input
         System.out.println("-------------------------------");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Health Monitoring System. Would you like to register a new user? (yes/no)");
@@ -53,7 +40,6 @@ public class HealthMonitoringApp {
             String password = scanner.nextLine();
             System.out.println("Are you a doctor? (true/false): ");
             boolean is_doctor = scanner.nextBoolean();
-            // User user = new User(first_name, last_name, email, password, is_doctor);
             instanceUser.setFirstName(first_name);
             instanceUser.setLastName(last_name);
             instanceUser.setEmail(email);
@@ -67,7 +53,9 @@ public class HealthMonitoringApp {
             System.out.println();
         } 
 
-        // test Login user (call testLoginUser() here) - user will be prompted to enter email and password from within the method
+/////////////////////LOGIN//////////////////////////
+
+        // LOGIN user (call testLoginUser() here) - user will be prompted to enter email and password from within the method
         System.out.println();
         System.out.println("Log In: ");
         System.out.println("-------------------------------");
@@ -103,7 +91,9 @@ public class HealthMonitoringApp {
                 System.out.println("Failed to add health data.");
             }
 
-            // Generate recommendations
+/////////////////////RECOMMENDATIONS//////////////////////////
+
+            // Generate RECOMMENDATIONS
             System.out.println();
             System.out.println("System Recommendations: ");
             System.out.println("-------------------------------");
@@ -130,9 +120,11 @@ public class HealthMonitoringApp {
                 System.out.println();
             }
         }
+
+/////////////////////MEDICINE REMINDERS//////////////////////////
         
         
-        // Add a medicine reminder
+        // Add a MEDICINE REMINDER
         System.out.println();
         System.out.println("Medicine Reminders: ");
         System.out.println("-------------------------------");
@@ -167,7 +159,7 @@ public class HealthMonitoringApp {
         }
 
 
-        // Get reminders for a specific user
+        // Get REMINDERS for a SPECIFIC USER
         System.out.println();
         System.out.println("Would you like to see all of your medicine reminders? (yes/no): ");
         String response3 = scanner.nextLine();
@@ -190,7 +182,7 @@ public class HealthMonitoringApp {
             }
         }
 
-        // Get reminders for a specific user only for current medications
+        // Get REMINDERS for a specific user only for CURRENT MEDICATIONS
         System.out.println();
         System.out.println("Would you like to see your due medicine reminders? (yes/no): ");
         String response4 = scanner.nextLine();
@@ -212,7 +204,10 @@ public class HealthMonitoringApp {
                 System.out.println();
             }
         }
-        //test doctor portal (call testDoctorPortal() here)
+
+/////////////////////DOCTOR PORTAL//////////////////////////
+
+        //test DOCTOR PORTAL (call testDoctorPortal() here)
         if (instanceUser.isDoctor()) {
             System.out.println();
             System.out.println("Welcome to the Doctor Portal, Doctor " + instanceUser.getLastName());
@@ -222,7 +217,8 @@ public class HealthMonitoringApp {
     }
 
 
-    // FUNCTIONS //////////////////////////////////////////
+/////////////////////FUNCTIONS/////////////////////////////
+
     public static boolean loginUser(String email, String password) {
         //implement method to login user.
         User user = UserDaoExample.getUserByEmail(email);
@@ -235,14 +231,6 @@ public class HealthMonitoringApp {
     }
 
 
-    /**
-     * To test the Doctor Portal in your Health Monitoring System, provide a simple test code method that you can add
-     * to your main application class.
-     * In this method, we'll test the following functionalities:
-     * 1. Fetching a doctor by ID
-     * 2. Fetching patients associated with a doctor
-     * 3. Fetching health data for a specific patient
-      */
     public static void testDoctorPortal() {
         DoctorPortalDao doctorPortalDao = new DoctorPortalDao();
        
@@ -278,6 +266,7 @@ public class HealthMonitoringApp {
                 break;
             }
         }
+
         // Add code to Fetch patients associated with the doctor
         List<User> patients = doctorPortalDao.getPatientsByDoctorId(instanceDoctor.getId());
         System.out.println("Patients associated with Doctor " + instanceDoctor.getLastName() + ": ");
@@ -311,10 +300,6 @@ public class HealthMonitoringApp {
     }
 
 
-    /**
-     * To test the login user functionality in your Health Monitoring System, you can
-     * add a test method to your main application class
-     */
     public static void testLoginUser() {
         // Prompt the user to enter their email and password to log them in and test whether it was successful or not all at once
 
@@ -338,16 +323,8 @@ public class HealthMonitoringApp {
                 System.out.println();
                 break;
             } else {
-                // Print to console, "Incorrect email or password. Please try again.");
                 System.out.println("Incorrect email or password. Please try again.");
-                // Show an error message and prompt the user to re-enter their credentials
             }
         }      
-    }
-
-    // addHealthData() method to add health data to the database
-    public static void addHealthData(HealthData healthData) {
-        // Add health data to the database
-        
     }
 }

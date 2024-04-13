@@ -1,14 +1,5 @@
-
-
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * In this basic version of the recommendationSystem class, complete the generateRecommendations to take a HealthData object as input and generates recommendations based on the user's heart rate and step count. You can also expand this class to include more health data analysis and generate more specific recommendations based on the user's unique health profile
- NOTE:
- To integrate this class into your application, you'll need to pass the HealthData object to the generateRecommendations method
- and store the generated recommendations in the recommendations table in the database.
- */
 
 public class RecommendationSystem {
     private static final int MIN_HEART_RATE = 50;

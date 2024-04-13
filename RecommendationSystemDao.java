@@ -1,6 +1,4 @@
-import java.util.List;
 import java.sql.*;
-import java.util.ArrayList;
 
 public class RecommendationSystemDao {
   public static boolean InsertRecommendationData(HealthData hd, String recommendation) {
@@ -14,13 +12,11 @@ public class RecommendationSystemDao {
       statement.setString(3, hd.getDate());
       int updatedRows = statement.executeUpdate();
       if (updatedRows != 0) {
-        // System.out.println("Recommendation data inserted successfully");
         return true;
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    // System.out.println("Failed to insert recommendation data");
     return false;
   }
 }

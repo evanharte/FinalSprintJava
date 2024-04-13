@@ -4,39 +4,39 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class HealthDataDao {
-  public static boolean createHealthData(HealthData healthData) { /* insert health data into database */ 
-  String query = "INSERT INTO health_data (user_id, weight, height, steps, heart_rate, date) VALUES (?, ?, ?, ?, ?, ?)";
+  public static boolean createHealthData(HealthData healthData) { 
+    String query = "INSERT INTO health_data (user_id, weight, height, steps, heart_rate, date) VALUES (?, ?, ?, ?, ?, ?)";
 
-  try {
-    Connection con = DatabaseConnection.getCon();
-    PreparedStatement statement = con.prepareStatement(query);
-    statement.setInt(1, healthData.getUserId());
-    statement.setDouble(2, healthData.getWeight());
-    statement.setDouble(3, healthData.getHeight());
-    statement.setInt(4, healthData.getSteps());
-    statement.setInt(5, healthData.getHeartRate());
-    statement.setString(6, healthData.getDate());
-    int updatedRows = statement.executeUpdate();
-    if (updatedRows != 0) {
-      return true;
+    try {
+      Connection con = DatabaseConnection.getCon();
+      PreparedStatement statement = con.prepareStatement(query);
+      statement.setInt(1, healthData.getUserId());
+      statement.setDouble(2, healthData.getWeight());
+      statement.setDouble(3, healthData.getHeight());
+      statement.setInt(4, healthData.getSteps());
+      statement.setInt(5, healthData.getHeartRate());
+      statement.setString(6, healthData.getDate());
+      int updatedRows = statement.executeUpdate();
+      if (updatedRows != 0) {
+        return true;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
-  } catch (SQLException e) {
-    e.printStackTrace();
+    return false;
   }
-  return false;
-}
 
   public HealthData getHealthDataById(int id) { 
   /* get health data by id from database */ 
-  int healthDataId = 0;
-  int userId = 0;
-  double weight = 0.0;
-  double height = 0.0;
-  int steps = 0;
-  int heartRate = 0;
-  String date = null;
+    int healthDataId = 0;
+    int userId = 0;
+    double weight = 0.0;
+    double height = 0.0;
+    int steps = 0;
+    int heartRate = 0;
+    String date = null;
 
-  String query = "SELECT * FROM health_data WHERE id = ?";
+    String query = "SELECT * FROM health_data WHERE id = ?";
 
     try {
       Connection con = DatabaseConnection.getCon();
@@ -91,33 +91,33 @@ public class HealthDataDao {
   }
 
   public boolean updateHealthData(HealthData healthData) { 
-  /* update health data in the database */ 
-  String query = "UPDATE health_data SET user_id = ?, weight = ?, height = ?, steps = ?, heart_rate = ?, date = ? WHERE id = ?";
+ 
+    String query = "UPDATE health_data SET user_id = ?, weight = ?, height = ?, steps = ?, heart_rate = ?, date = ? WHERE id = ?";
 
-  try {
-    Connection con = DatabaseConnection.getCon();
-    PreparedStatement statement = con.prepareStatement(query);
-    statement.setInt(1, healthData.getUserId());
-    statement.setDouble(2, healthData.getWeight());
-    statement.setDouble(3, healthData.getHeight());
-    statement.setInt(4, healthData.getSteps());
-    statement.setInt(5, healthData.getHeartRate());
-    statement.setString(6, healthData.getDate());
-    statement.setInt(7, healthData.getId());
-    int updatedRows = statement.executeUpdate();
-    if (updatedRows != 0) {
-      return true;
+    try {
+      Connection con = DatabaseConnection.getCon();
+      PreparedStatement statement = con.prepareStatement(query);
+      statement.setInt(1, healthData.getUserId());
+      statement.setDouble(2, healthData.getWeight());
+      statement.setDouble(3, healthData.getHeight());
+      statement.setInt(4, healthData.getSteps());
+      statement.setInt(5, healthData.getHeartRate());
+      statement.setString(6, healthData.getDate());
+      statement.setInt(7, healthData.getId());
+      int updatedRows = statement.executeUpdate();
+      if (updatedRows != 0) {
+        return true;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+
     }
-  } catch (SQLException e) {
-    e.printStackTrace();
-
+    return false;
   }
-  return false;
-}
 
   public boolean deleteHealthData(int id) { 
   /* delete health data from the database */ 
-  String query = "DELETE FROM health_data WHERE id = ?";
+    String query = "DELETE FROM health_data WHERE id = ?";
 
     try {
       Connection con = DatabaseConnection.getCon();
