@@ -221,6 +221,11 @@ public class HealthMonitoringApp {
             System.out.println("-----------------------------------------------");
             testDoctorPortal();
         }
+
+        // End program
+        System.out.println("-----------------------------------------------");
+        System.out.println("Thank you for using the Health Monitoring System. Goodbye!");
+        System.out.println();
     }
 
 
@@ -284,6 +289,8 @@ public class HealthMonitoringApp {
             System.out.println("Patient Email: " + patient.getEmail());
             System.out.println();
         }
+
+        System.out.println();
         
         // Add code to Fetch health data for the patient
         System.out.println("Would you like to see health data for a specific patient? (yes/no): ");
